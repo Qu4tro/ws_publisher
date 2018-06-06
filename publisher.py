@@ -1,5 +1,3 @@
-from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
-
 import threading
 import sys
 
@@ -41,25 +39,3 @@ class WsPublisher(threading.Thread):
 
 
 ws_publisher = WsPublisher()
-
-
-class SubscriptionHandler(WebSocket):
-    def handleMessage(self):
-        pass
-
-    def handleConnected(self):
-        ws_publisher.add_client(self)
-        print(self.address, 'connected')
-
-    def handleClose(self):
-        ws_publisher.rm_client(self)
-        print(self.address, 'closed')
-
-
-ws_publisher.start()
-server = SimpleWebSocketServer('', 8484, SubscriptionHandler)
-
-try:
-    server.serveforever()
-except KeyboardInterrupt:
-    print("EOF")
